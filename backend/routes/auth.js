@@ -8,7 +8,7 @@ var jwt = require('jsonwebtoken');
 
 const JWT_SECRET = "itsuday991"
 
-//Create a User using: POST "/api/auth/createuser". Dosen't require Auth
+//Create a User using: POST "/api/auth/createuser". Dosen't require (Login)Auth
 
 router.post('/createuser', [
     body('email','Enter a valid email').isEmail(),
@@ -51,4 +51,46 @@ router.post('/createuser', [
        
 })
 
+
+
+
+//Authenticate a User using: POST "/api/auth/login". Dosen't require Login(Auth)
+router.post('/login', [
+    body('email','Enter a valid email').isEmail(),
+    body('password','Password cannot be empty').exists()
+], async (req, res) => {
+    // Finds the validation errors in this request and send to user 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+    try {
+        let user = await User.findOne({ email })
+        if (!user) {
+            return res.status(404).json({ error: "User with this email id does not exist" });
+        }
+
+        const passwordCompare = await bcrypt.compare(password, user.password)
+        if (!passwordCompare) {
+            return res.status(404).json({ error: "Please enter correct password" });
+        }
+
+        const data = {
+            user: {
+                id: user.id
+            }
+        }
+        const authtoken = jwt.sign(data, JWT_SECRET)
+        res.json({authtoken});
+    
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).send('Some internal error occured')
+    }
+
+})
+    
+    
 module.exports = router
