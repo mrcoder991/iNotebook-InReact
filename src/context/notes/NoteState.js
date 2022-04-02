@@ -5,7 +5,7 @@ const NoteState = (props) => {
   const host = "http://localhost:5000"
   const notesInitial = []
 
-  const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI0NzNiYTZiNDY4M2IzMTk0MmJkMjc1In0sImlhdCI6MTY0ODgzNTUzMH0.F4ys6gYZQlgNVvFli77l0PnXJk1kBhLE75-tPIQXnOY'
+  const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI0ODNjZGVmYTBlZGVlZmVkMDZlZWU4In0sImlhdCI6MTY0ODkwMTM0Mn0.6ouwKaKBKkeaZSBdb1n6EOneIIJwFr0KNV5oBb8_jMo'
 
   const [notes, setNotes] = useState(notesInitial);
 
@@ -37,20 +37,7 @@ const NoteState = (props) => {
       body: JSON.stringify({title, description, tag})
     });
 
-    const json = await response.json();
-    console.log(json)
-     
-
-    console.log("Adding a new note")
-    const note = {
-      "_id": "61322f119553781a8ca8d0e08",
-      "user": "6131dc5e3e4037cd4734a0664",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "date": "2021-09-03T14:20:09.668Z",
-      "__v": 0
-    };
+    const note = await response.json();
     setNotes(notes.concat(note))
   }
 
@@ -60,7 +47,7 @@ const NoteState = (props) => {
     const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'aplication/json',
+        'Content-Type': 'application/json',
         'auth-token': authToken
       },
       body: JSON.stringify({ title, description, tag })
@@ -91,7 +78,7 @@ const NoteState = (props) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'aplication/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI0MDZjZDU4Nzg3ODAyYTM2ZDhlZTMyIn0sImlhdCI6MTY0ODYxMTIzNH0.T75VD_g6KuOyFCckCl29933ErofFCLvBm-rZJVeS0mw'
+        'auth-token': authToken
       },
     });
     const json = await response.json()
