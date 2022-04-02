@@ -85,8 +85,22 @@ const NoteState = (props) => {
     console.log(json)
   }
 
+  //USER LOGIN
+  const login = async  (email, password) => {
+    console.log('this is login with' ,email, password)
+    const response = await fetch(`${host}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password})
+    });
+    const json = await response.json()
+    console.log(json)
+  }
+
   return (
-    <NoteContext.Provider value={{ notes, setNotes, addNote, editNote, deleteNote, getNotes }}>
+    <NoteContext.Provider value={{ notes, setNotes, addNote, editNote, deleteNote, getNotes, login }}>
       {props.children}
     </NoteContext.Provider>
   )
