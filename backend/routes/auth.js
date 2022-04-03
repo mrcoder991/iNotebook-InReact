@@ -17,16 +17,17 @@ router.post('/createuser', [
     body('name', 'Name must be at least of 3 characters').isLength({ min: 3 }),
     body('password','Password must be at least of 5 characters').isLength({ min: 5 }),
 ], async (req, res) => {
+    let success = false;
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
     //check weather the user with the same email exists allready
     try {
         let user = await User.findOne({ email: req.body.email })
         if (user) {
-            return res.status(404).json({error: "Sorry an email with this email already exist"})
+            return res.status(404).json({success, error: "Sorry an email with this email already exist"})
         }
         
         const salt = await bcrypt.genSalt(10);
@@ -44,11 +45,11 @@ router.post('/createuser', [
         }
 
         const authtoken = jwt.sign(data, JWT_SECRET)
-
-        res.json({authtoken});
+        success = true;
+        res.json({success, authtoken});
     } catch (error) {
         console.error(error.message)
-        res.status(500).send('Some internal error occured')
+        res.status(500).send(success, 'Some internal error occured')
     }    
        
 })
