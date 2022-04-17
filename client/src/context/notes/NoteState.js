@@ -2,7 +2,7 @@ import NoteContext from "./noteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
-  const host = "http://localhost:5000"
+  const host = process.env.PORT
   const notesInitial = []
 
   const authToken = localStorage.getItem('token')
