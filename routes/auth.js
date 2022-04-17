@@ -8,7 +8,7 @@ var jwt = require('jsonwebtoken');
 
 
 
-const secret = process.env.SECRET || "itsuday991"
+const JWT_SECRET = process.env.SECRET || "itsuday991"
 
 // ROUTE 1 :Create a User using: POST "/api/auth/createuser". Dosen't require (Login)Auth
 
