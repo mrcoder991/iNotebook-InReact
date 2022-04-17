@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate  } from 'react-router-dom';
 
 export const Signup = (props) => {
@@ -22,14 +22,20 @@ export const Signup = (props) => {
     const json = await response.json()
     console.log(json);
     // Save the auth token and redirect
-    localStorage.setItem('token', json.authtoken);
-    navigate('/');
-    props.showAlert("Acoung Created Successfully", "success");
+    if (json.success) {
+      localStorage.setItem('token', json.authtoken);
+      navigate('/');
+      props.showAlert("Account Created Successfully", "success");
+    }
+    else {
+      props.showAlert("Invalid credentials", "danger");
+    }
   }
   
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <h2>Create a secured account with iNotebook</h2>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>
           <input onChange={onChange} type="text" className="form-control" name="name" id="name" aria-describedby="emailHelp" required/>

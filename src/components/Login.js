@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react'
-import noteContext from '../context/notes/noteContext';
-import { useNavigate  } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useNavigate , Link } from 'react-router-dom';
 
-export const Login = () => {
-    const context = useContext(noteContext);
-    const { login } = context;
+export const Login = (props) => {
+
     const [credentials, setCredentials] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     
@@ -30,15 +28,16 @@ export const Login = () => {
             // Save the auth token and redirect
             localStorage.setItem('token', json.authtoken); 
             navigate('/');
-
+            props.showAlert("Successfully logged in", "success");
         }
         else{
-            alert("Invalid credentials");
+            props.showAlert("Invalid credentials", "danger");
         }
     }
     return (
         <div>
             <form onSubmit={handleSubmit}>
+                <h2>Login to continue to iNotebook</h2>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input onChange={onChange} type="email" className="form-control" value={credentials.email} id="email" name="email" aria-describedby="emailHelp"/>
@@ -48,11 +47,8 @@ export const Login = () => {
                     <label htmlFor="password" className="form-label">Password</label>
                     <input onChange={onChange} type="password" className="form-control" value={credentials.password} name="password" id="password"/>
                 </div>
-                <div className="mb-3 form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-                </div>
                 <button type="submit" className="btn btn-primary" >Submit</button>
+                <p>New to iNotebook? <Link to="/signup">Signup</Link></p>
             </form>
         </div>
     )

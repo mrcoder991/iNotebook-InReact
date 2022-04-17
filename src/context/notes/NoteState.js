@@ -5,7 +5,7 @@ const NoteState = (props) => {
   const host = "http://localhost:5000"
   const notesInitial = []
 
-  const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI0ODNjZGVmYTBlZGVlZmVkMDZlZWU4In0sImlhdCI6MTY0ODkwMTM0Mn0.6ouwKaKBKkeaZSBdb1n6EOneIIJwFr0KNV5oBb8_jMo'
+  const authToken = localStorage.getItem('token')
 
   const [notes, setNotes] = useState(notesInitial);
 
@@ -83,6 +83,8 @@ const NoteState = (props) => {
     });
     const json = await response.json()
     console.log(json)
+    const newNotes = notes.filter((note) => { return note._id !== id })
+    setNotes(newNotes)
   }
 
   //USER LOGIN
