@@ -13,12 +13,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start" :"react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "both": "concurrently \"npm run start\" \"nodemon backend/index.js\"",
-    "start": "node backend/server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
+    "both": "concurrently \"npm run start\" \"nodemon backend/index.js\""
   },
   "engines": {
     "node": "16.13.1"
